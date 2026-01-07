@@ -134,3 +134,24 @@ npm run test:integration
 # Run unit tests with verbose output
 npm run debug-test
 ```
+
+
+## FAQ
+
+### Does the script work on Windows?
+
+The script is bash-only and won't run natively on Windows. It requires:
+
+  - Bash shell (#!/bin/bash)
+  - Unix utilities (dirname, etc.)
+  - Bash-specific syntax ([[ ]], set -euo pipefail)
+
+Windows options:
+| Method                            | Works? |
+|-----------------------------------|--------|
+| Native CMD/PowerShell             | No     |
+| WSL (Windows Subsystem for Linux) | Yes    |
+| Git Bash                          | Yes    |
+| Cygwin/MSYS2                      | Yes    |
+
+So Windows users can use it through WSL or Git Bash, but it's not a native Windows solution. If you need native Windows support, you'd need a PowerShell port or a cross-platform rewrite (e.g., in Python or Node.js).
