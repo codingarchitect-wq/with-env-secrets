@@ -1,18 +1,16 @@
 # xsops
 
-A CLI helper for running commands with SOPS-encrypted secrets injected as environment variables, without leaking them into the global shell environment or in files.
+XSOPS simplifies working with per-environment encrypted secrets without leaking them. It acts as a opinionated convenience wrapper for running commands with SOPS-encrypted secrets injected as environment variables, without leaking them into the global shell environment or in files.
 
 This is useful for managing per-environment secrets (dev, prod, etc.) in a secure way and not worrying about accidentally exposing them in environment variables or .env files when running AI coding agents.
 
 ## What It Does
 
-This script simplifies working with per-environment encrypted secrets. It acts as a opinionated convenience wrapper for `sops` commands, so you can:
-
 - Run any command with secrets loaded into its environment
   - It relies on the sops `exec-env` command to decrypt secrets on-the-fly and pass them to the command being run. See the [SOPS exec-env documentation](https://github.com/getsops/sops?tab=readme-ov-file#passing-secrets-to-other-processes) for more details.
 - View decrypted secrets without creating temporary files
 - Edit encrypted secrets in your default editor
-- Work from any subdirectory—the script finds the project root automatically
+- Work from any subdirectory of your project, the script finds the project root and secret files automatically
 
 Secrets never leak into your shell's environment; they're only available to the command you run.
 
