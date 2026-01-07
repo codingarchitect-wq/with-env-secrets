@@ -1,4 +1,4 @@
-# xsops
+# XSOPS
 
 XSOPS simplifies working with per-environment encrypted secrets without leaking them. It acts as a opinionated convenience wrapper for running commands with SOPS-encrypted secrets injected as environment variables, without leaking them into the global shell environment or in files.
 
