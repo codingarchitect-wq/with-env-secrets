@@ -2,11 +2,13 @@
 
 A CLI helper for running commands with SOPS-encrypted secrets injected as environment variables, without leaking them into the global shell environment or in files.
 
+This is useful for managing per-environment secrets (dev, prod, etc.) in a secure way and not worrying about accidentally exposing them in environment variables or .env files when running AI coding agents.
+
 It relies on the sops `exec-env` command to decrypt secrets on-the-fly and pass them to the command being run. See the [SOPS exec-env documentation](https://github.com/getsops/sops?tab=readme-ov-file#passing-secrets-to-other-processes) for more details.
 
 ## What It Does
 
-This script simplifies working with per-environment encrypted secrets. Instead of manually decrypting files or remembering SOPS commands, you can:
+This script simplifies working with per-environment encrypted secrets. It acts as a opinionated convenience wrapper for `sops` commands, so you can:
 
 - Run any command with secrets loaded into its environment
 - View decrypted secrets without creating temporary files
