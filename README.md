@@ -10,6 +10,7 @@ This is useful for managing per-environment secrets (dev, prod, etc.) in a secur
   - It relies on the `sops exec-env` command to decrypt secrets on-the-fly and pass them to the command being run. See the [SOPS exec-env documentation](https://github.com/getsops/sops?tab=readme-ov-file#passing-secrets-to-other-processes) for more details.
 - View decrypted secrets without creating temporary files
 - Edit encrypted secrets in your default editor
+- Encrypt plaintext secrets files in place
 - Work from any subdirectory of your project, the script finds the project root and secret files automatically
 
 Secrets never leak into your shell's environment; they're only available to the command you run.
@@ -123,7 +124,7 @@ DATABASE_URL: postgres://localhost/myapp_dev
 API_KEY: dev-secret-key
 ```
 
-Encrypt with: `sops -e -i secrets/dev/env.yaml`
+Encrypt with: `xsops encrypt dev`
 
 ## Usage
 
@@ -152,6 +153,14 @@ Opens the decrypted file in your editor; re-encrypts on save:
 
 ```bash
 xsops edit dev
+```
+
+### Encrypt secrets
+
+Encrypts a plaintext secrets file in place:
+
+```bash
+xsops encrypt dev
 ```
 
 ### Show resolved paths

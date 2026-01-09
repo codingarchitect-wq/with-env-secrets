@@ -145,3 +145,61 @@ teardown() {
     [ "$status" -eq 0 ]
     [[ "$output" =~ "secrets/prod/env.yaml" ]]
 }
+
+# --- Encrypt command ---
+
+@test "encrypt encrypts plaintext secrets file" {
+    cd "$TEST_DIR/project"
+    # Create a new unencrypted secrets file
+    mkdir -p secrets/staging
+    cat > secrets/staging/env.yaml <<EOF
+STAGING_KEY: staging-value
+EOF
+
+    # Verify file is plaintext (no sops marker)
+    run grep "sops:" secrets/staging/env.yaml
+    [ "$status" -eq 1 ]
+
+    # Encrypt it
+    run "$TEST_DIR/xsops" encrypt staging
+    [ "$status" -eq 0 ]
+
+    # Verify file is now encrypted (has sops marker)
+    run grep "sops:" secrets/staging/env.yaml
+    [ "$status" -eq 0 ]
+}
+
+@test "encrypt produces file that can be decrypted" {
+    cd "$TEST_DIR/project"
+    # Create a new unencrypted secrets file
+    mkdir -p secrets/staging
+    cat > secrets/staging/env.yaml <<EOF
+STAGING_KEY: staging-value
+EOF
+
+    # Encrypt it
+    "$TEST_DIR/xsops" encrypt staging
+
+    # Verify we can decrypt and get original value
+    run sops -d secrets/staging/env.yaml
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "STAGING_KEY: staging-value" ]]
+}
+
+@test "encrypt works from nested directory" {
+    cd "$TEST_DIR/project"
+    # Create a new unencrypted secrets file
+    mkdir -p secrets/staging
+    cat > secrets/staging/env.yaml <<EOF
+STAGING_KEY: staging-value
+EOF
+
+    # Encrypt from nested directory
+    cd src/nested
+    run "$TEST_DIR/xsops" encrypt staging
+    [ "$status" -eq 0 ]
+
+    # Verify file is encrypted
+    run grep "sops:" "$TEST_DIR/project/secrets/staging/env.yaml"
+    [ "$status" -eq 0 ]
+}

@@ -22,6 +22,7 @@ usage() {
     echo "  run <env> -- <cmd>    Run command with secrets loaded"
     echo "  edit <env>            Edit secrets file"
     echo "  view <env>            View decrypted secrets"
+    echo "  encrypt <env>         Encrypt secrets file in place"
     echo "  which <env>           Show resolved paths"
     echo ""    
 }
@@ -62,6 +63,9 @@ case "$CMD" in
         ;;
     view)
         sops -d "$SECRETS_FILE"
+        ;;
+    encrypt)
+        sops -e -i "$SECRETS_FILE"
         ;;
     which)
         echo "Project root: $PROJECT_ROOT"

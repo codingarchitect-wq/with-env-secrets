@@ -96,6 +96,9 @@ case "$CMD" in
     view)
         cat "$SECRETS_FILE"
         ;;
+    encrypt)
+        echo "Would encrypt: $SECRETS_FILE"
+        ;;
     which)
         echo "Project root: $PROJECT_ROOT"
         echo "Secrets file: $SECRETS_FILE"
@@ -229,4 +232,34 @@ teardown() {
     run "$TEST_DIR/xsops" which prod
     [ "$status" -eq 0 ]
     [[ "$output" =~ "secrets/prod/env.yaml" ]]
+}
+
+# --- Encrypt command ---
+
+@test "encrypt targets correct dev secrets file" {
+    cd "$TEST_DIR/project"
+    run "$TEST_DIR/xsops" encrypt dev
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "secrets/dev/env.yaml" ]]
+}
+
+@test "encrypt targets correct prod secrets file" {
+    cd "$TEST_DIR/project"
+    run "$TEST_DIR/xsops" encrypt prod
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "secrets/prod/env.yaml" ]]
+}
+
+@test "encrypt works from nested directory" {
+    cd "$TEST_DIR/project/src/nested"
+    run "$TEST_DIR/xsops" encrypt dev
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ "secrets/dev/env.yaml" ]]
+}
+
+@test "encrypt fails for nonexistent environment" {
+    cd "$TEST_DIR/project"
+    run "$TEST_DIR/xsops" encrypt staging
+    [ "$status" -eq 1 ]
+    [[ "$output" =~ "Secrets file not found" ]]
 }
