@@ -7,7 +7,7 @@ This is useful for managing per-environment secrets (dev, prod, etc.) in a secur
 ## What It Does
 
 - Run any command with secrets loaded into its environment
-  - It relies on the sops `exec-env` command to decrypt secrets on-the-fly and pass them to the command being run. See the [SOPS exec-env documentation](https://github.com/getsops/sops?tab=readme-ov-file#passing-secrets-to-other-processes) for more details.
+  - It relies on the `sops exec-env` command to decrypt secrets on-the-fly and pass them to the command being run. See the [SOPS exec-env documentation](https://github.com/getsops/sops?tab=readme-ov-file#passing-secrets-to-other-processes) for more details.
 - View decrypted secrets without creating temporary files
 - Edit encrypted secrets in your default editor
 - Work from any subdirectory of your project, the script finds the project root and secret files automatically
